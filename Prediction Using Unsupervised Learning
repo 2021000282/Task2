@@ -1,0 +1,41 @@
+rm(list=ls())
+#Load the dataset
+summary(iris)
+dim(iris)
+data=iris[,1:4]
+
+#Load the packages
+install.packages("fpc")
+install.packages("cluster")
+install.packages("ggplot2")
+install.packages("factoextra")
+library(fpc)
+library(ggplot2)
+library(cluster)
+library(factoextra)
+
+
+#1] To determine optimum number of cluster(k)
+scale=head(scale(data),20)
+scale
+
+#visualize using Elbow Method
+fviz_nbclust(scale, kmeans, method = "wss") + 
+  labs(title = "The elbow method")
+
+#Here the optimum value of k occur where the elbow(bend) occur
+#The elbow occur at point 3,so k=3.
+
+
+#2] visualize using k means cluster
+kmeans=kmeans(data,3)
+t=table(iris$Species,kmeans$cluster)
+t
+
+plot(data[c("Sepal.Length","Sepal.Width")],col=kmeans$cluster,pch=18)
+clusplot(data,kmeans$cluster,color=TRUE,shade=TRUE)
+
+
+
+
+
